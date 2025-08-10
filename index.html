@@ -1,0 +1,440 @@
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Beats of Honey</title>
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- 💖 Romantic + Readable Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Courgette&family=Dancing+Script&family=Merienda&family=Raleway:wght@300;500;700&family=Open+Sans:wght@300;400;600&family=Nunito:wght@300;600&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    /* 1. Body */
+    body {
+      font-family: 'Open Sans', sans-serif;
+    }
+
+    /* 2. Shayari Text */
+    #winner-text,
+    #shayari-list pre,
+    .shayari-text {
+      font-family: 'Dancing Script', cursive;
+      font-size: 20px;
+      color: #800040;
+    }
+
+    /* 3. Winner name */
+    .winner-name {
+      font-family: 'Courgette', cursive;
+      font-size: 16px;
+      color: #cc0066;
+      text-align: right;
+      margin-top: 10px;
+    }
+
+    /* 4. Headings */
+    h2, h3, .section-heading {
+      font-family: 'Merienda', cursive;
+      font-weight: 600;
+    }
+
+    /* 5. Buttons & Labels */
+    button, label {
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 600;
+    }
+
+    /* 6. Form Inputs */
+    form input, form textarea, form select {
+      font-family: 'Raleway', sans-serif;
+      font-size: 15px;
+    }
+
+    /* 7. Stats / Small Notes */
+    .stats-box, .small-label, .admin-note {
+      font-family: 'Nunito', sans-serif;
+      font-size: 14px;
+    }
+
+    /* 8. Hide Success Popup by default */
+    #successPopup {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- 💖 Shayari Banner Above Welcome -->
+<div id="intro-shayari">
+  <p>
+    પ્રેમ એટલે એકબીજા ની સાથે જીવવું નહી,<br>
+    પ્રેમ એટલે એકબીજા નાં શ્વાસ માં જીવવું !!....<br>
+    <strong>Love you Radha 🥰💗</strong>
+  </p>
+</div>
+  <!-- 🌸 Welcome Section Start -->
+  <section class="welcome">
+    <h1>💗 Welcome to Beats of Honey 💗</h1>
+    <p>જ્યાં પ્રેમ દરેક પલમાં ધબકે છે...</p>
+  </section>
+  <!-- 🌸 Welcome Section End -->
+<!-- 🎬 YouTube Videos Section -->
+<section class="videos">
+  <h2>🎬 Latest Uploads</h2>
+  <div id="video-gallery" class="video-container">
+    <p>Loading videos with love... 💗</p>
+  </div>
+</a>
+</section>
+<!-- Button to open modal -->
+<button class="btn" onclick="openAllVideosModal()">🎥 View All Videos</button>
+
+<!-- Modal -->
+<div id="allVideosModal" class="modal">
+  <div class="modal-content">
+    <span class="close-btn" onclick="closeAllVideosModal()">&times;</span>
+    <h2>📺 All Channel Videos</h2>
+
+    <!-- Filter Tabs -->
+    <div class="filter-tabs">
+      <button onclick="setFilter('video')">Videos</button>
+      <button onclick="setFilter('shorts')">Shorts</button>
+      <button onclick="setFilter('playlist')">Playlists</button>
+    </div>
+
+    <!-- Video List -->
+    <div id="all-videos-list" class="video-gallery"></div>
+
+    <!-- Load More -->
+    <button id="load-more-btn" class="btn" onclick="fetchVideos()">⬇️ Load More</button>
+  </div>
+</div>
+
+
+<!-- Firebase JS SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+<script>
+/// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyA9Kdqdj3Ghf8UEPh6bHEGtNb3GQxs4_e0",
+  authDomain: "beats-of-honey-7e6ea.firebaseapp.com",
+  projectId: "beats-of-honey-7e6ea",
+  storageBucket: "beats-of-honey-7e6ea.firebasestorage.app",
+  messagingSenderId: "42100791645",
+  appId: "1:42100791645:web:fde91c97a83e43d87ab0b4",
+  measurementId: "G-MM8ZL2660J"
+};
+  // 🔌 Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  const database = firebase.database();
+</script>
+<!-- 🏆 Winning Shayari Display -->
+<section id="winning-shayari" style="display: none; padding: 50px 30px; background: linear-gradient(to bottom, #ffe6f0, #fff0f9); margin: 50px auto; border-radius: 25px; box-shadow: 0 10px 25px rgba(255,105,180,0.2); max-width: 700px; text-align: center;">
+  <h2 style="color: #cc0066; font-size: 26px; margin-bottom: 20px;">💝 Shayari Winner 💝</h2>
+  <p id="winner-text" style="font-size: 20px; white-space: pre-wrap; line-height: 1.6; color: #800040; background: #fff0f5; padding: 20px; border-radius: 15px; border: 1px solid #ffb3d9;"></p>
+</section>
+
+
+
+<section class="fan-of-week">
+  <h2>💖 Fan of the Week 💖</h2>
+  <div id="fanHighlightBox">Loading Fan of the Week...</div>
+</section>
+
+
+<!-- 🏆 Leaderboard Section -->
+<section id="leaderboard" class="leaderboard">
+  <h2>🏆 Top 10 Fans of the Week</h2>
+  <div id="topFans" class="fans-grid">
+    <p>Loading leaderboard... 💞</p>
+  </div>
+</section>
+<button id="viewPastBtn" class="submit-btn">👑 View Past Winners</button>
+
+<!-- 🏆 Past Winners Modal -->
+<div id="pastWinnersModal" class="modal">
+  <div class="modal-content">
+    <span id="closePastModal" class="close-btn">❌</span>
+    <h2>Past Winners</h2>
+    <div id="past-winners-list" class="fans-grid"></div>
+  </div>
+</div>
+
+<!-- 🔘 Fan Wall Button (below Past Winners) -->
+<button id="viewAllFansBtn" class="submit-btn">🌟 View All Fans</button>
+
+<div id="fanWallModal" class="modal" style="display: none;">
+  <div class="modal-content">
+    <span id="closeFanWallBtn" class="close-btn">❌</span>
+    <h2>💞 Fan Wall</h2>
+    <div id="fan-wall-list" class="fans-grid">Loading fans...</div>
+  </div>
+</div>
+
+<div style="margin-bottom: 20px; text-align: center;">
+</div>
+<!-- 📝 Leaderboard Message -->
+<div id="leaderboard-message" style="text-align:center; font-size: 18px; margin-top: 15px; color: #6a1b9a;"></div>
+
+<div class="challenge-instructions">
+  <p>📸 <strong>How to Participate in the Reels Tag Challenge</strong></p>
+  <ol style="text-align: left;">
+    <li>Go to Instagram and post a reel using your creativity.</li>
+    <li>
+      Add 
+      <a href="https://instagram.com/beats_of_honey_12" target="_blank" style="color: #ff1493; text-decoration: none; font-weight: bold;">
+        @beats_of_honey_12
+      </a> 
+      in your reel <strong>story mention</strong>.
+    </li>
+    <li>Only story mentions will be counted.</li>
+    <li>The top fan of the week will be announced every Sunday.</li>
+  </ol>
+</div>
+
+
+<!-- ❤️ Radha Ko Ek Shayari Gift Karo -->
+<section id="shayari-submit-section">
+  <h2>🎁 Radha Ko Ek Shayari Gift Karo</h2>
+  <label for="shayari-style">Shayari Style:</label>
+  <select id="shayari-style">
+    <option value="Romantic">Romantic</option>
+    <option value="Sad">Sad</option>
+    <option value="Bold">Bold</option>
+  </select>
+
+  <label for="shayari-text">    
+    Apni Shayari Likho:</label>
+  <textarea id="shayari-text" rows="5" placeholder="Yahan apni dil se likhi shayari likho..." required></textarea>
+
+  <button onclick="submitShayari()">💌 Submit</button>
+  <p id="shayari-submit-success" style="color: green; display: none;">Shayari bhej di gayi hai!</p>
+</section>
+
+<!-- Contact Card-->
+<section class="contact-card">
+  <h2>Contact</h2>
+  <form id="loveForm">
+    <input type="text" name="name" placeholder="Full Name" required>
+    <input type="email" name="email" placeholder="Email" required>
+    <textarea name="message" placeholder="Message" rows="4" required></textarea>
+    <div class="button-group">
+      <button type="reset" class="reset-btn">Reset</button>
+      <button type="submit" class="submit-btn">Submit</button>
+    </div>
+  </form>
+  <!-- 💌 Success Popup -->
+  <div id="successPopup">
+    💖 Your message has been sent with love! 💖
+  </div>
+</section>
+<section class="stats-counter">
+  <h2>📊 Love Stats</h2>
+  <div class="stats-grid">
+    <div><strong id="visitCount">0</strong><br>Visitors</div>
+    <div><strong id="videoViewsCount">0</strong><br>YouTube Views</div>
+    <div><strong id="instaViewsCount">0</strong><br>Instagram Views</div>
+    <div><strong id="downloadCount">0</strong><br>Downloads</div>
+    <div><strong id="likeCount">0</strong><br>Hearts</div>
+    
+  </div>
+</section>
+
+
+<!-- 💼 Shayari Admin Panel (Visible only to shayariadmin) -->
+<div id="shayari-admin-panel" style="display: none; margin: 50px auto; max-width: 900px; padding: 30px; background: linear-gradient(145deg, #ffe6f0, #fff0f9); border-radius: 20px; box-shadow: 0 8px 20px rgba(255, 0, 128, 0.2);">
+  <h2 style="text-align: center; color: #cc0066; font-size: 28px; margin-bottom: 25px;">💌 Fans Ki Shayari Collection</h2>
+  <div id="shayari-list"></div>
+</div>
+
+<!-- 🔐 Admin Login Emoji Button -->
+<button id="admin-login-btn" title="Admin Login">😚</button>
+<!-- 🔐 Hidden Login Panel -->
+<div id="admin-login-panel">
+  <span id="close-login-panel">❌</span> <!-- 🔴 New Close Button -->
+  <div class="login-box">
+    <h2>Admin Login</h2>
+    <input type="text" id="admin-username" placeholder="Username" />
+    <input type="password" id="admin-password" placeholder="Password" />
+    <button onclick="handleAdminLogin()">🔓 Login</button>
+    <p id="login-error" style="color: red; display: none;">Invalid login details.</p>
+  </div>
+</div>
+<!-- 🔒 Admin Fan Form Panel (Initially Hidden) -->
+<div id="fan-form-panel" style="display: none;" class="form-popup">
+  <div class="form-container">
+    <button onclick="closeFanForm()" class="close-btn">❌</button>
+    <h2>Add Fan Entry</h2>
+
+    <form id="fan-form">
+      <input type="text" id="fan-username" placeholder="Username" required />
+      <input type="number" id="fan-tagcount" placeholder="Tag Count" required />
+      <input type="text" id="fan-photo" placeholder="Photo Filename (e.g., fan1.jpg)" required />
+      <button type="submit" class="submit-btn">Submit</button>
+    </form>
+  </div>
+</div>
+<!-- Logout Button (hidden by default) -->
+<button id="admin-logout-btn" onclick="logoutAdmin()" style="display: none;">Logout</button>
+<style>
+  .site-footer {
+    background-color: #ffe6f0;
+    padding: 20px;
+    text-align: center;
+  }
+
+  .social-icons img {
+    height: 30px;
+    transition: transform 0.3s ease, filter 0.3s ease;
+  }
+
+  .social-icons a:hover img {
+    transform: scale(1.2);
+    filter: drop-shadow(0 0 8px hotpink);
+  }
+
+  .footer-note {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #888;
+  }
+</style>
+
+<script>
+  let popupShown = false;
+  let allowClose = false;
+
+  // Mouse leaves towards top => show popup
+  document.addEventListener("mouseleave", function (e) {
+    if (!popupShown && e.clientY <= 0) {
+      showExitPopup();
+    }
+  });
+
+  // Try blocking close manually using 'beforeunload' – but prevent browser popup
+  window.addEventListener("beforeunload", function (e) {
+    if (!allowClose) {
+      // Block default reload popup
+      e.preventDefault();
+      e.returnValue = '';
+      return '';
+    }
+  });
+
+  function showExitPopup() {
+    popupShown = true;
+
+    const popup = document.createElement("div");
+    popup.innerHTML = `
+      <style>
+        .exit-popup-overlay {
+          position: fixed;
+          top: 0; left: 0; right: 0; bottom: 0;
+          background: rgba(0,0,0,0.7);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          z-index: 999999;
+        }
+        .exit-popup {
+          background: #fff0f5;
+          padding: 25px 30px;
+          border-radius: 20px;
+          text-align: center;
+          max-width: 400px;
+          box-shadow: 0 0 30px hotpink;
+          animation: popFade 0.3s ease;
+        }
+        .exit-popup h3 {
+          color: #e91e63;
+          margin-bottom: 12px;
+          font-size: 22px;
+        }
+        .exit-popup p {
+          font-size: 15px;
+          color: #444;
+        }
+        .exit-popup .social-icons a {
+          display: inline-block;
+          margin: 10px 15px;
+          transition: transform 0.3s ease, filter 0.3s ease;
+        }
+        .exit-popup .social-icons a:hover {
+          transform: scale(1.2);
+          filter: drop-shadow(0 0 10px hotpink);
+        }
+        .exit-popup img {
+          height: 40px;
+        }
+        .exit-popup button {
+          margin-top: 18px;
+          background: #e91e63;
+          color: white;
+          padding: 10px 22px;
+          font-size: 15px;
+          border: none;
+          border-radius: 10px;
+          cursor: pointer;
+        }
+        @keyframes popFade {
+          from { opacity: 0; transform: scale(0.8); }
+          to { opacity: 1; transform: scale(1); }
+        }
+      </style>
+      <div class="exit-popup-overlay">
+        <div class="exit-popup">
+          <h3>😢 Ruk jao yaar...</h3>
+          <p>Aapne abhi tak hamare YouTube ya Instagram pe follow nahi kiya 💔<br>Waha bhi dekhna zaroori hai ❤️</p>
+          <div class="social-icons">
+            <a href="https://www.instagram.com/beats_of_honey_12" target="_blank">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/e/e7/Instagram_logo_2016.svg" alt="Instagram">
+            </a>
+            <a href="https://youtube.com/@beatsofhoney?si=vg2v4SFvIvdxpfwq" target="_blank">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/b/b8/YouTube_Logo_2017.svg" alt="YouTube">
+            </a>
+          </div>
+          <button onclick="confirmFollow()">Haan, follow kar liya hai 😊</button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(popup);
+  }
+
+  function confirmFollow() {
+    allowClose = true;
+    document.querySelector(".exit-popup-overlay").remove();
+    // Optional: allow unload now
+  }
+</script>
+<footer style="background: linear-gradient(to right, #ffe6f0, #fff); padding: 40px 20px; text-align: center; border-top: 2px solid #ff80b3; font-family: 'Poppins', sans-serif;">
+  <h2 style="color: #cc0066; font-size: 28px; margin-bottom: 15px;">💖 Stay Connected with Us 💖</h2>
+
+  <div class="social-icons" style="margin: 20px 0;">
+    <a href="https://www.instagram.com/beats_of_honey_12" target="_blank" style="margin: 0 15px; display: inline-block; transition: transform 0.3s ease, filter 0.3s ease;">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/e/e7/Instagram_logo_2016.svg" alt="Instagram" style="height: 40px;">
+    </a>
+    <a href="https://youtube.com/@beatsofhoney?si=vg2v4SFvIvdxpfwq" target="_blank" style="margin: 0 15px; display: inline-block; transition: transform 0.3s ease, filter 0.3s ease;">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/b/b8/YouTube_Logo_2017.svg" alt="YouTube" style="height: 40px;">
+    </a>
+  </div>
+
+  <nav style="margin-top: 20px;">
+   
+    <a href="#video-gallery" style="margin: 0 12px; color: #cc0066; text-decoration: none; font-weight: 500;">📺 Gallery</a>
+    <a href="#leaderboard" style="margin: 0 12px; color: #cc0066; text-decoration: none; font-weight: 500;">🏆 Leaderboard</a>
+    <a href="#shayari-submit-section" style="margin: 0 12px; color: #cc0066; text-decoration: none; font-weight: 500;">💌 Shayari</a>
+    <a href="#contact-card" style="margin: 0 12px; color: #cc0066; text-decoration: none; font-weight: 500;">📞 Contact</a>
+   
+  </nav>
+
+  <p style="margin-top: 25px; font-size: 16px; color: #888;">
+    &copy; 2025 ❤️ Made with love for <span style="color: #cc0066; font-weight: bold;">Radha 💗</span> — All rights reserved.
+  </p>
+</footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
