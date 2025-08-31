@@ -759,3 +759,14 @@ window.logoutAdmin = function () {
   location.reload(); // Refresh to reset UI
 }
 incrementInstagramViews()
+// ✅ Add hidden SEO keywords for Google
+window.addEventListener("load", () => {
+  const seoDiv = document.createElement("div");
+  seoDiv.style.display = "none"; // hidden
+  seoDiv.innerHTML = `
+    Beats of Honey - Romantic Shayari, Sad Shayari, Love Quotes, Hindi Shayari, 
+    Romantic Beats, Sad Vibes, Dosti Shayari, Emotional Shayari, Love Poems, 
+    Music Beats, Heart Touching Lines, Couple Shayari.
+  `;
+  document.body.appendChild(seoDiv);
+});
