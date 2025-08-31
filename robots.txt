@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://beatsofhoney.github.io/BeatsofHoney/sitemap.xml
